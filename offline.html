@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>📡 Офлайн · Расписание</title>
+    <title>Офлайн · Расписание</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * {
             margin: 0;
@@ -31,7 +32,7 @@
             box-shadow: 0 20px 60px rgba(0,0,0,0.2);
         }
         h1 {
-            font-size: 120px;
+            font-size: 80px;
             margin-bottom: 16px;
             line-height: 1;
         }
@@ -90,17 +91,17 @@
 </head>
 <body>
     <div class="container">
-        <div class="status-badge">🔴 Нет соединения</div>
-        <h1>📡</h1>
-        <h2>Ты офлайн</h2>
-        <p>Но расписание сохранено!<br>📚 Все пары доступны без интернета</p>
+        <div class="status-badge"><i class="fas fa-wifi-slash"></i> Нет соединения</div>
+        <h1><i class="fas fa-cloud-download-alt"></i></h1>
+        <h2>Вы офлайн</h2>
+        <p>Но расписание сохранено!<br><i class="fas fa-calendar-check"></i> Все пары доступны без интернета</p>
         <button class="btn" onclick="location.reload()">
-            🔄 Обновить
+            <i class="fas fa-sync-alt"></i> Обновить
         </button>
         <div class="hint">
-            <span>💾 Данные в кеше</span>
+            <span><i class="fas fa-database"></i> Данные в кеше</span>
             <span>•</span>
-            <span>📅 Неделя загружена</span>
+            <span><i class="fas fa-calendar-week"></i> Неделя загружена</span>
         </div>
     </div>
     <script>

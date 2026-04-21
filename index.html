@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>📚 Расписание РФ24-22Б</title>
+    <title>Расписание РФ24-22Б</title>
     
     <!-- PWA мета-теги -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="📚 Расписание">
-    <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='36' fill='%23667eea'/%3E%3Ctext x='90' y='120' font-family='Arial' font-size='100' text-anchor='middle'%3E📚%3C/text%3E%3C/svg%3E">
+    <meta name="apple-mobile-web-app-title" content="Расписание">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='36' fill='%23667eea'/%3E%3Ctext x='90' y='120' font-family='Arial' font-size='100' text-anchor='middle' fill='white'%3E📚%3C/text%3E%3C/svg%3E">
     <meta name="theme-color" content="#0071e3">
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23667eea'/%3E%3Ctext x='16' y='22' font-family='Arial' font-size='18' text-anchor='middle'%3E📚%3C/text%3E%3C/svg%3E">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23667eea'/%3E%3Ctext x='16' y='22' font-family='Arial' font-size='18' text-anchor='middle' fill='white'%3E📚%3C/text%3E%3C/svg%3E">
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
@@ -24,7 +24,7 @@
         }
 
         body {
-            font-family: 'Helvetica Neue', 'Helvetica', 'SF Pro Text', 'Segoe UI Emoji', 'Apple Color Emoji', sans-serif;
+            font-family: 'Helvetica Neue', 'Helvetica', 'SF Pro Text', sans-serif;
             font-weight: 950;
             min-height: 100vh;
             transition: all 0.3s ease;
@@ -110,6 +110,17 @@
         @keyframes pulse-glow {
             0%, 100% { box-shadow: 0 0 20px rgba(0, 113, 227, 0.3); }
             50% { box-shadow: 0 0 30px rgba(0, 113, 227, 0.5); }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -40%);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%);
+            }
         }
 
         .gradient-bg {
@@ -322,7 +333,7 @@
             color: white;
         }
 
-        .mic-btn, .qr-toggle-btn, .ambient-btn, .share-btn {
+        .mic-btn, .ambient-btn, .share-btn {
             background: var(--bg-glass);
             backdrop-filter: blur(20px);
             border: 1px solid var(--border-glass);
@@ -353,63 +364,145 @@
             color: var(--text);
         }
 
-        .qr-popup {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(0.9);
-            background: var(--bg-glass);
-            backdrop-filter: blur(40px);
-            border: 2px solid var(--accent);
-            border-radius: 60px;
-            padding: 32px 40px;
-            z-index: 1000;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-        }
-
-        .qr-popup.show {
-            opacity: 1;
-            visibility: visible;
-            transform: translate(-50%, -50%) scale(1);
-        }
-
-        .qr-popup .qr-code {
-            background: white;
-            padding: 20px;
-            border-radius: 40px;
-        }
-
-        .close-qr {
-            position: absolute;
-            top: 15px;
-            right: 25px;
-            background: none;
-            border: none;
-            font-size: 28px;
-            cursor: pointer;
-            color: var(--text);
-        }
-
-        .qr-overlay {
+        /* Модальное окно для QR и Share */
+        .modal-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.7);
-            backdrop-filter: blur(5px);
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
             z-index: 999;
             opacity: 0;
             visibility: hidden;
             transition: all 0.3s ease;
         }
 
-        .qr-overlay.show {
+        .modal-overlay.show {
             opacity: 1;
             visibility: visible;
+        }
+
+        .modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--bg-glass);
+            backdrop-filter: blur(40px);
+            border: 2px solid var(--accent);
+            border-radius: 48px;
+            padding: 40px;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+            max-width: 500px;
+            width: 90%;
+        }
+
+        .modal.show {
+            opacity: 1;
+            visibility: visible;
+            animation: slideUp 0.4s ease;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .modal-header h3 {
+            font-size: 24px;
+            font-weight: 950;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            color: var(--text);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .modal-close:hover {
+            background: var(--bg-glass);
+            transform: scale(1.1);
+        }
+
+        .modal-content {
+            text-align: center;
+        }
+
+        .qr-container {
+            background: white;
+            padding: 24px;
+            border-radius: 32px;
+            display: inline-block;
+            margin-bottom: 24px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .share-options {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            margin-top: 24px;
+            flex-wrap: wrap;
+        }
+
+        .share-option {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 14px 24px;
+            border-radius: 40px;
+            font-size: 16px;
+            font-weight: 950;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.2s;
+            flex: 1;
+            min-width: 140px;
+            justify-content: center;
+        }
+
+        .share-option:hover {
+            background: var(--accent-hover);
+            transform: scale(1.02);
+        }
+
+        .share-option.secondary {
+            background: var(--bg-glass);
+            color: var(--text);
+            border: 1px solid var(--border-glass);
+        }
+
+        .share-option.secondary:hover {
+            background: var(--border-glass);
+        }
+
+        .modal-footer {
+            margin-top: 20px;
+            color: var(--text-secondary);
+            font-size: 14px;
         }
 
         .schedule-grid {
@@ -545,7 +638,7 @@
             z-index: 10000;
             display: none;
             backdrop-filter: blur(10px);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
             font-weight: 600;
             white-space: nowrap;
         }
@@ -555,20 +648,22 @@
             .header { padding: 32px 20px; margin-bottom: 24px; }
             .next-pair { padding: 24px 20px; margin-bottom: 24px; }
             .control-bar { padding: 12px; gap: 8px; margin-bottom: 28px; }
-            .btn, .mic-btn, .qr-toggle-btn, .ambient-btn, .share-btn { padding: 10px 20px; font-size: 14px; }
+            .btn, .mic-btn, .ambient-btn, .share-btn { padding: 10px 20px; font-size: 14px; }
             .theme-selector { width: 100%; justify-content: space-around; }
             .group-selector { width: 100%; justify-content: space-around; }
             .theme-btn, .group-btn { padding: 6px 14px; font-size: 12px; }
             .day-header { padding: 20px 24px 16px; flex-direction: column; gap: 12px; align-items: flex-start; }
             .pairs-list { padding: 16px 20px 20px; }
             .pair-card { padding: 16px 18px; }
-            .qr-popup { width: 85%; padding: 24px 20px; }
-            .qr-popup .qr-code canvas { width: 150px !important; height: 150px !important; }
+            .modal { padding: 24px 20px; width: 95%; }
+            .qr-container canvas { width: 150px !important; height: 150px !important; }
             #offlineToast { white-space: normal; width: 90%; text-align: center; }
+            .share-options { flex-direction: column; }
+            .share-option { width: 100%; }
         }
 
         @media (max-width: 480px) {
-            .btn, .mic-btn, .qr-toggle-btn, .ambient-btn, .share-btn { width: 100%; justify-content: center; }
+            .btn, .mic-btn, .ambient-btn, .share-btn { width: 100%; justify-content: center; }
             .pair-header { flex-direction: column; align-items: flex-start; }
         }
     </style>
@@ -576,88 +671,107 @@
 <body class="theme-apple">
     <div class="gradient-bg"></div>
     
-    <div id="offlineToast">📡 Нет подключения к интернету. Работаем офлайн 💾</div>
+    <div id="offlineToast">
+        <i class="fas fa-wifi-slash"></i> Нет подключения к интернету. Работаем офлайн
+    </div>
 
     <div class="container">
         <div class="header glass">
-            <h1>🎓 Расписание занятий</h1>
-            <div class="group">👥 РФ24-22Б</div>
+            <h1><i class="fas fa-graduation-cap"></i> Расписание занятий</h1>
+            <div class="group">РФ24-22Б</div>
         </div>
 
         <div class="next-pair glass">
-            <div class="next-pair-label">⏰ Следующая пара</div>
+            <div class="next-pair-label"><i class="far fa-clock"></i> Следующая пара</div>
             <div class="next-pair-time" id="nextPairTime">Загрузка...</div>
             <div class="next-pair-name" id="nextPairName"></div>
         </div>
 
         <div class="control-bar glass">
-            <button class="btn btn-primary" id="todayBtn">📅 Сегодня</button>
-            <button class="btn btn-primary" id="tomorrowBtn">⏩ Завтра</button>
+            <button class="btn btn-primary" id="todayBtn"><i class="fas fa-sun"></i> Сегодня</button>
+            <button class="btn btn-primary" id="tomorrowBtn"><i class="fas fa-arrow-right"></i> Завтра</button>
             <select id="daySelect" class="btn" style="background: var(--bg-glass);">
-                <option value="">📋 Выбрать день</option>
-                <option value="monday">📅 Понедельник</option>
-                <option value="tuesday">📅 Вторник</option>
-                <option value="wednesday">📅 Среда</option>
-                <option value="thursday">📅 Четверг</option>
-                <option value="friday">📅 Пятница</option>
-                <option value="saturday">📅 Суббота</option>
-                <option value="sunday">📅 Воскресенье</option>
+                <option value=""><i class="far fa-calendar-alt"></i> Выбрать день</option>
+                <option value="monday">Понедельник</option>
+                <option value="tuesday">Вторник</option>
+                <option value="wednesday">Среда</option>
+                <option value="thursday">Четверг</option>
+                <option value="friday">Пятница</option>
+                <option value="saturday">Суббота</option>
+                <option value="sunday">Воскресенье</option>
             </select>
 
             <div class="group-selector">
-                <button class="group-btn active" data-group="1">1️⃣ 1 подгруппа</button>
-                <button class="group-btn" data-group="2">2️⃣ 2 подгруппа</button>
+                <button class="group-btn active" data-group="1"><i class="fas fa-user"></i> 1 подгруппа</button>
+                <button class="group-btn" data-group="2"><i class="fas fa-users"></i> 2 подгруппа</button>
             </div>
 
             <div class="theme-selector">
-                <button class="theme-btn active" data-theme="apple">🍎 Apple</button>
-                <button class="theme-btn" data-theme="neon">🌈 Неон</button>
-                <button class="theme-btn" data-theme="nature">🌿 Природа</button>
-                <button class="theme-btn" data-theme="cosmos">🌌 Космос</button>
+                <button class="theme-btn active" data-theme="apple"><i class="fab fa-apple"></i> Apple</button>
+                <button class="theme-btn" data-theme="neon"><i class="fas fa-rainbow"></i> Неон</button>
+                <button class="theme-btn" data-theme="nature"><i class="fas fa-leaf"></i> Природа</button>
+                <button class="theme-btn" data-theme="cosmos"><i class="fas fa-moon"></i> Космос</button>
             </div>
-            <button class="mic-btn" id="micBtn">🎤 Голос</button>
-            <button class="ambient-btn" id="ambientBtn">🎵 Эмбиент вкл</button>
-            <button class="share-btn" id="shareBtn">📤 Поделиться</button>
-            <button class="qr-toggle-btn" id="qrToggleBtn">📱 QR-код</button>
+            <button class="mic-btn" id="micBtn"><i class="fas fa-microphone"></i> Голос</button>
+            <button class="ambient-btn" id="ambientBtn"><i class="fas fa-music"></i> Эмбиент вкл</button>
+            <button class="share-btn" id="shareBtn"><i class="fas fa-share-alt"></i> Поделиться</button>
         </div>
 
         <div id="scheduleContainer" class="schedule-grid">
-            <div class="empty-message">✨ Загрузка расписания...</div>
+            <div class="empty-message"><i class="fas fa-spinner fa-pulse"></i> Загрузка расписания...</div>
         </div>
 
         <div class="footer">
-            ✅ Проект Максима Иванова | 🎓 РФ24-22Б
+            <i class="fas fa-check-circle"></i> Проект Максима Иванова | РФ24-22Б
         </div>
     </div>
 
-    <div class="qr-overlay" id="qrOverlay"></div>
-    <div class="qr-popup" id="qrPopup">
-        <button class="close-qr" id="closeQrBtn">&times;</button>
-        <div style="text-align: center;">
-            <h3 style="margin-bottom: 20px; color: var(--text);">📱 Отсканируй QR-код</h3>
-            <div id="qrCode" class="qr-code"></div>
-            <p style="margin-top: 20px; color: var(--text-secondary);">📸 Наведи камеру → откроет расписание</p>
+    <!-- Модальное окно для QR и Share -->
+    <div class="modal-overlay" id="modalOverlay"></div>
+    <div class="modal" id="shareModal">
+        <div class="modal-header">
+            <h3><i class="fas fa-share-alt"></i> Поделиться расписанием</h3>
+            <button class="modal-close" id="closeModalBtn"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="modal-content">
+            <div class="qr-container">
+                <div id="qrCode"></div>
+            </div>
+            <p style="color: var(--text); margin-bottom: 20px;">
+                <i class="fas fa-qrcode"></i> Отсканируйте QR-код или поделитесь ссылкой
+            </p>
+            <div class="share-options">
+                <button class="share-option" id="copyLinkBtn">
+                    <i class="fas fa-link"></i> Копировать
+                </button>
+                <button class="share-option secondary" id="nativeShareBtn">
+                    <i class="fas fa-share"></i> Поделиться
+                </button>
+            </div>
+            <div class="modal-footer">
+                <i class="fas fa-mobile-alt"></i> Наведите камеру на QR-код
+            </div>
         </div>
     </div>
 
     <script>
-        // ========== ФУНКЦИЯ ПОЛУЧЕНИЯ ЭМОДЗИ ДЛЯ ПРЕДМЕТА ==========
-        function getEmojiForSubject(subjectName) {
+        // ========== ФУНКЦИЯ ПОЛУЧЕНИЯ ИКОНКИ ДЛЯ ПРЕДМЕТА ==========
+        function getIconForSubject(subjectName) {
             const name = subjectName.toLowerCase();
-            if (name.includes('базы данных') || name.includes('бд')) return '🗄️';
-            if (name.includes('фотоник')) return '💡';
-            if (name.includes('оптическ')) return '🔬';
-            if (name.includes('физик')) return '⚛️';
-            if (name.includes('иностранн') || name.includes('англ')) return '🌍';
-            if (name.includes('математической физики') || name.includes('ммиф')) return '📐';
-            if (name.includes('теория вероятност')) return '🎲';
-            if (name.includes('программирован')) return '💻';
-            if (name.includes('физическая культур') || name.includes('физра')) return '🏃';
-            if (name.includes('деловая коммуникац') || name.includes('русск')) return '💬';
-            if (name.includes('лекция')) return '📖';
-            if (name.includes('лаб')) return '🧪';
-            if (name.includes('пр. занятие') || name.includes('практич')) return '✏️';
-            return '📚';
+            if (name.includes('базы данных') || name.includes('бд')) return 'fa-database';
+            if (name.includes('фотоник')) return 'fa-lightbulb';
+            if (name.includes('оптическ')) return 'fa-eye';
+            if (name.includes('физик')) return 'fa-atom';
+            if (name.includes('иностранн') || name.includes('англ')) return 'fa-language';
+            if (name.includes('математической физики') || name.includes('ммиф')) return 'fa-square-root-variable';
+            if (name.includes('теория вероятност')) return 'fa-dice';
+            if (name.includes('программирован')) return 'fa-code';
+            if (name.includes('физическая культур') || name.includes('физра')) return 'fa-person-running';
+            if (name.includes('деловая коммуникац') || name.includes('русск')) return 'fa-comments';
+            if (name.includes('лекция')) return 'fa-book';
+            if (name.includes('лаб')) return 'fa-flask';
+            if (name.includes('пр. занятие') || name.includes('практич')) return 'fa-pencil';
+            return 'fa-book-open';
         }
 
         // ========== РАСПИСАНИЕ ДЛЯ РФ24-22Б ==========
@@ -819,9 +933,9 @@
             thursday: 'Четверг', friday: 'Пятница', saturday: 'Суббота', sunday: 'Воскресенье'
         };
         
-        const daysEmoji = {
-            monday: '📅', tuesday: '📅', wednesday: '📅',
-            thursday: '📅', friday: '🎉', saturday: '🌟', sunday: '😴'
+        const daysIcons = {
+            monday: 'fa-calendar-day', tuesday: 'fa-calendar-day', wednesday: 'fa-calendar-day',
+            thursday: 'fa-calendar-day', friday: 'fa-calendar-check', saturday: 'fa-calendar-alt', sunday: 'fa-moon'
         };
         
         const daysOrder = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
@@ -857,8 +971,8 @@
             const daySchedule = schedule[currentDay]?.[weekType];
 
             if (!daySchedule || Object.keys(daySchedule).length === 0) {
-                document.getElementById('nextPairTime').innerHTML = '😴 Сегодня пар нет';
-                document.getElementById('nextPairName').innerHTML = 'Отдыхай! 🎉';
+                document.getElementById('nextPairTime').innerHTML = 'Сегодня пар нет';
+                document.getElementById('nextPairName').innerHTML = 'Отдыхай! <i class="fas fa-party-horn"></i>';
                 return;
             }
 
@@ -887,27 +1001,27 @@
             }
 
             if (currentPair) {
-                document.getElementById('nextPairTime').innerHTML = '🔥 Сейчас идёт!';
-                document.getElementById('nextPairName').innerHTML = `${getEmojiForSubject(currentPair.name)} ${currentPair.name}`;
+                document.getElementById('nextPairTime').innerHTML = '<i class="fas fa-fire"></i> Сейчас идёт!';
+                document.getElementById('nextPairName').innerHTML = `<i class="fas ${getIconForSubject(currentPair.name)}"></i> ${currentPair.name}`;
             } else if (nextPair) {
                 const hours = Math.floor(minDiff / 60);
                 const minutes = minDiff % 60;
                 if (hours > 0) {
-                    document.getElementById('nextPairTime').innerHTML = `⏰ Через ${hours} ч ${minutes} мин`;
+                    document.getElementById('nextPairTime').innerHTML = `<i class="far fa-hourglass"></i> Через ${hours} ч ${minutes} мин`;
                 } else {
-                    document.getElementById('nextPairTime').innerHTML = `⏰ Через ${minutes} мин`;
+                    document.getElementById('nextPairTime').innerHTML = `<i class="far fa-hourglass"></i> Через ${minutes} мин`;
                 }
-                document.getElementById('nextPairName').innerHTML = `${getEmojiForSubject(nextPair.name)} ${nextPair.name}`;
+                document.getElementById('nextPairName').innerHTML = `<i class="fas ${getIconForSubject(nextPair.name)}"></i> ${nextPair.name}`;
             } else {
-                document.getElementById('nextPairTime').innerHTML = '✅ Пары закончились';
-                document.getElementById('nextPairName').innerHTML = 'Хорошего отдыха! 🌙';
+                document.getElementById('nextPairTime').innerHTML = '<i class="fas fa-check-circle"></i> Пары закончились';
+                document.getElementById('nextPairName').innerHTML = 'Хорошего отдыха! <i class="fas fa-moon"></i>';
             }
         }
 
         function renderFullSchedule() {
             const container = document.getElementById('scheduleContainer');
             const weekType = getWeekParity();
-            const weekName = weekType === 'even' ? 'ЧЕТНАЯ' : 'НЕЧЕТНАЯ';
+            const weekName = weekType === 'even' ? 'ЧЁТНАЯ' : 'НЕЧЁТНАЯ';
             const today = daysMap[new Date().getDay()];
             const schedule = getCurrentSchedule();
 
@@ -920,10 +1034,10 @@
                 allDaysHtml += `
                     <div class="day-card glass">
                         <div class="day-header">
-                            <h2>${daysEmoji[today]} ${todayName}</h2>
+                            <h2><i class="fas ${daysIcons[today]}"></i> ${todayName}</h2>
                             <div class="week-badge">${weekName} неделя</div>
                         </div>
-                        <div class="empty-message">😴 В этот день нет пар</div>
+                        <div class="empty-message"><i class="far fa-calendar-times"></i> В этот день нет пар</div>
                     </div>
                 `;
             } else {
@@ -934,19 +1048,19 @@
                     pairsHtml += `
                         <div class="pair-card ${isCurrent ? 'current' : ''}">
                             <div class="pair-header">
-                                <span class="pair-number">${getEmojiForSubject(p.name)} ${pairNum} пара</span>
-                                <span class="pair-time">🕐 ${p.time}</span>
+                                <span class="pair-number"><i class="fas ${getIconForSubject(p.name)}"></i> ${pairNum} пара</span>
+                                <span class="pair-time"><i class="far fa-clock"></i> ${p.time}</span>
                             </div>
-                            <div class="pair-name">${p.name}</div>
-                            <div class="pair-teacher">👨‍🏫 ${p.teacher}</div>
-                            <div class="pair-room">📍 ${p.room}</div>
+                            <div class="pair-name"><i class="fas fa-book-open"></i> ${p.name}</div>
+                            <div class="pair-teacher"><i class="fas fa-chalkboard-user"></i> ${p.teacher}</div>
+                            <div class="pair-room"><i class="fas fa-location-dot"></i> ${p.room}</div>
                         </div>
                     `;
                 }
                 allDaysHtml += `
                     <div class="day-card glass">
                         <div class="day-header">
-                            <h2>${daysEmoji[today]} ${todayName}</h2>
+                            <h2><i class="fas ${daysIcons[today]}"></i> ${todayName}</h2>
                             <div class="week-badge">${weekName} неделя</div>
                         </div>
                         <div class="pairs-list">${pairsHtml}</div>
@@ -964,10 +1078,10 @@
                     allDaysHtml += `
                         <div class="day-card glass">
                             <div class="day-header">
-                                <h2>${daysEmoji[day]} ${dayNameRu}</h2>
+                                <h2><i class="fas ${daysIcons[day]}"></i> ${dayNameRu}</h2>
                                 <div class="week-badge">${weekName} неделя</div>
                             </div>
-                            <div class="empty-message">😴 В этот день нет пар</div>
+                            <div class="empty-message"><i class="far fa-calendar-times"></i> В этот день нет пар</div>
                         </div>
                     `;
                 } else {
@@ -978,19 +1092,19 @@
                         pairsHtml += `
                             <div class="pair-card ${isCurrent ? 'current' : ''}">
                                 <div class="pair-header">
-                                    <span class="pair-number">${getEmojiForSubject(p.name)} ${pairNum} пара</span>
-                                    <span class="pair-time">🕐 ${p.time}</span>
+                                    <span class="pair-number"><i class="fas ${getIconForSubject(p.name)}"></i> ${pairNum} пара</span>
+                                    <span class="pair-time"><i class="far fa-clock"></i> ${p.time}</span>
                                 </div>
-                                <div class="pair-name">${p.name}</div>
-                                <div class="pair-teacher">👨‍🏫 ${p.teacher}</div>
-                                <div class="pair-room">📍 ${p.room}</div>
+                                <div class="pair-name"><i class="fas fa-book-open"></i> ${p.name}</div>
+                                <div class="pair-teacher"><i class="fas fa-chalkboard-user"></i> ${p.teacher}</div>
+                                <div class="pair-room"><i class="fas fa-location-dot"></i> ${p.room}</div>
                             </div>
                         `;
                     }
                     allDaysHtml += `
                         <div class="day-card glass">
                             <div class="day-header">
-                                <h2>${daysEmoji[day]} ${dayNameRu}</h2>
+                                <h2><i class="fas ${daysIcons[day]}"></i> ${dayNameRu}</h2>
                                 <div class="week-badge">${weekName} неделя</div>
                             </div>
                             <div class="pairs-list">${pairsHtml}</div>
@@ -1005,7 +1119,7 @@
         function showSpecificDay(selectedDay) {
             const container = document.getElementById('scheduleContainer');
             const weekType = getWeekParity();
-            const weekName = weekType === 'even' ? 'ЧЕТНАЯ' : 'НЕЧЕТНАЯ';
+            const weekName = weekType === 'even' ? 'ЧЁТНАЯ' : 'НЕЧЁТНАЯ';
             const schedule = getCurrentSchedule();
 
             let allDaysHtml = '';
@@ -1017,10 +1131,10 @@
                 allDaysHtml += `
                     <div class="day-card glass">
                         <div class="day-header">
-                            <h2>${daysEmoji[selectedDay]} ${selectedName}</h2>
+                            <h2><i class="fas ${daysIcons[selectedDay]}"></i> ${selectedName}</h2>
                             <div class="week-badge">${weekName} неделя</div>
                         </div>
-                        <div class="empty-message">😴 В этот день нет пар</div>
+                        <div class="empty-message"><i class="far fa-calendar-times"></i> В этот день нет пар</div>
                     </div>
                 `;
             } else {
@@ -1031,19 +1145,19 @@
                     pairsHtml += `
                         <div class="pair-card ${isCurrent ? 'current' : ''}">
                             <div class="pair-header">
-                                <span class="pair-number">${getEmojiForSubject(p.name)} ${pairNum} пара</span>
-                                <span class="pair-time">🕐 ${p.time}</span>
+                                <span class="pair-number"><i class="fas ${getIconForSubject(p.name)}"></i> ${pairNum} пара</span>
+                                <span class="pair-time"><i class="far fa-clock"></i> ${p.time}</span>
                             </div>
-                            <div class="pair-name">${p.name}</div>
-                            <div class="pair-teacher">👨‍🏫 ${p.teacher}</div>
-                            <div class="pair-room">📍 ${p.room}</div>
+                            <div class="pair-name"><i class="fas fa-book-open"></i> ${p.name}</div>
+                            <div class="pair-teacher"><i class="fas fa-chalkboard-user"></i> ${p.teacher}</div>
+                            <div class="pair-room"><i class="fas fa-location-dot"></i> ${p.room}</div>
                         </div>
                     `;
                 }
                 allDaysHtml += `
                     <div class="day-card glass">
                         <div class="day-header">
-                            <h2>${daysEmoji[selectedDay]} ${selectedName}</h2>
+                            <h2><i class="fas ${daysIcons[selectedDay]}"></i> ${selectedName}</h2>
                             <div class="week-badge">${weekName} неделя</div>
                         </div>
                         <div class="pairs-list">${pairsHtml}</div>
@@ -1061,10 +1175,10 @@
                     allDaysHtml += `
                         <div class="day-card glass">
                             <div class="day-header">
-                                <h2>${daysEmoji[day]} ${dayNameRu}</h2>
+                                <h2><i class="fas ${daysIcons[day]}"></i> ${dayNameRu}</h2>
                                 <div class="week-badge">${weekName} неделя</div>
                             </div>
-                            <div class="empty-message">😴 В этот день нет пар</div>
+                            <div class="empty-message"><i class="far fa-calendar-times"></i> В этот день нет пар</div>
                         </div>
                     `;
                 } else {
@@ -1075,19 +1189,19 @@
                         pairsHtml += `
                             <div class="pair-card ${isCurrent ? 'current' : ''}">
                                 <div class="pair-header">
-                                    <span class="pair-number">${getEmojiForSubject(p.name)} ${pairNum} пара</span>
-                                    <span class="pair-time">🕐 ${p.time}</span>
+                                    <span class="pair-number"><i class="fas ${getIconForSubject(p.name)}"></i> ${pairNum} пара</span>
+                                    <span class="pair-time"><i class="far fa-clock"></i> ${p.time}</span>
                                 </div>
-                                <div class="pair-name">${p.name}</div>
-                                <div class="pair-teacher">👨‍🏫 ${p.teacher}</div>
-                                <div class="pair-room">📍 ${p.room}</div>
+                                <div class="pair-name"><i class="fas fa-book-open"></i> ${p.name}</div>
+                                <div class="pair-teacher"><i class="fas fa-chalkboard-user"></i> ${p.teacher}</div>
+                                <div class="pair-room"><i class="fas fa-location-dot"></i> ${p.room}</div>
                             </div>
                         `;
                     }
                     allDaysHtml += `
                         <div class="day-card glass">
                             <div class="day-header">
-                                <h2>${daysEmoji[day]} ${dayNameRu}</h2>
+                                <h2><i class="fas ${daysIcons[day]}"></i> ${dayNameRu}</h2>
                                 <div class="week-badge">${weekName} неделя</div>
                             </div>
                             <div class="pairs-list">${pairsHtml}</div>
@@ -1167,7 +1281,7 @@
                     isPlaying = true;
                     startLoop();
                 });
-            } catch(e) { console.log("🎵 Аудио не поддерживается"); }
+            } catch(e) { console.log("Аудио не поддерживается"); }
         }
 
         function stopAmbientMusic() {
@@ -1185,10 +1299,10 @@
             setTimeout(() => btn.classList.remove('jump-animation'), 300);
 
             if (ambientEnabled) {
-                btn.innerHTML = '🎵 Эмбиент вкл';
+                btn.innerHTML = '<i class="fas fa-music"></i> Эмбиент вкл';
                 startAmbientMusic();
             } else {
-                btn.innerHTML = '🔇 Эмбиент выкл';
+                btn.innerHTML = '<i class="fas fa-volume-mute"></i> Эмбиент выкл';
                 stopAmbientMusic();
             }
         }
@@ -1198,63 +1312,65 @@
             document.body.removeEventListener('click', initMusic);
         }, { once: true });
 
-        // ========== QR-КОД ==========
-        let qrVisible = false;
+        // ========== МОДАЛЬНОЕ ОКНО ДЛЯ SHARE И QR ==========
         let qrCodeInstance = null;
+        let isModalOpen = false;
 
-        function showQrCode() {
-            const popup = document.getElementById('qrPopup');
-            const overlay = document.getElementById('qrOverlay');
-            popup.classList.add('show');
+        function showModal() {
+            const modal = document.getElementById('shareModal');
+            const overlay = document.getElementById('modalOverlay');
+            modal.classList.add('show');
             overlay.classList.add('show');
-            qrVisible = true;
+            isModalOpen = true;
+            document.body.style.overflow = 'hidden';
 
             if (!qrCodeInstance) {
                 qrCodeInstance = new QRCode(document.getElementById("qrCode"), {
                     text: window.location.href,
-                    width: 180,
-                    height: 180
+                    width: 200,
+                    height: 200,
+                    correctLevel: QRCode.CorrectLevel.H
                 });
             }
         }
 
-        function hideQrCode() {
-            const popup = document.getElementById('qrPopup');
-            const overlay = document.getElementById('qrOverlay');
-            popup.classList.remove('show');
+        function hideModal() {
+            const modal = document.getElementById('shareModal');
+            const overlay = document.getElementById('modalOverlay');
+            modal.classList.remove('show');
             overlay.classList.remove('show');
-            qrVisible = false;
+            isModalOpen = false;
+            document.body.style.overflow = '';
         }
 
-        function toggleQrCode() {
-            const btn = document.getElementById('qrToggleBtn');
-            btn.classList.add('jump-animation');
-            setTimeout(() => btn.classList.remove('jump-animation'), 300);
-
-            if (qrVisible) {
-                hideQrCode();
-            } else {
-                showQrCode();
+        async function copyLink() {
+            try {
+                await navigator.clipboard.writeText(window.location.href);
+                alert('📋 Ссылка скопирована в буфер обмена!');
+                hideModal();
+            } catch (err) {
+                alert('Не удалось скопировать ссылку');
             }
         }
 
-        // ========== SHARE ==========
-        async function shareSchedule() {
+        async function nativeShare() {
             const shareData = {
-                title: '📚 Расписание РФ24-22Б',
-                text: '🎓 Расписание занятий группы РФ24-22Б',
+                title: 'Расписание РФ24-22Б',
+                text: 'Расписание занятий группы РФ24-22Б',
                 url: window.location.href
             };
 
             try {
                 if (navigator.share) {
                     await navigator.share(shareData);
+                    hideModal();
                 } else {
-                    await navigator.clipboard.writeText(window.location.href);
-                    alert('📋 Ссылка скопирована в буфер обмена!');
+                    await copyLink();
                 }
             } catch (err) {
-                console.log('Ошибка шаринга:', err);
+                if (err.name !== 'AbortError') {
+                    console.log('Ошибка шаринга:', err);
+                }
             }
         }
 
@@ -1268,7 +1384,7 @@
             recognition.onresult = (event) => {
                 const text = event.results[0][0].transcript.toLowerCase();
                 document.getElementById('micBtn').classList.remove('listening');
-                document.getElementById('micBtn').innerHTML = '🎤 Голос';
+                document.getElementById('micBtn').innerHTML = '<i class="fas fa-microphone"></i> Голос';
 
                 if (text.includes('сегодня')) renderFullSchedule();
                 else if (text.includes('завтра')) showTomorrow();
@@ -1283,7 +1399,12 @@
                 else if (text.includes('какая сейчас пара')) {
                     alert(document.getElementById('nextPairTime').innerText + ' ' + document.getElementById('nextPairName').innerText);
                 }
-                else alert('🗣️ Скажи: сегодня, завтра, день недели или подгруппа');
+                else alert('Скажи: сегодня, завтра, день недели или подгруппа');
+            };
+
+            recognition.onerror = () => {
+                document.getElementById('micBtn').classList.remove('listening');
+                document.getElementById('micBtn').innerHTML = '<i class="fas fa-microphone"></i> Голос';
             };
         }
 
@@ -1291,13 +1412,13 @@
             if (recognition) {
                 recognition.start();
                 document.getElementById('micBtn').classList.add('listening');
-                document.getElementById('micBtn').innerHTML = '🎙️ Слушаю...';
+                document.getElementById('micBtn').innerHTML = '<i class="fas fa-microphone-alt"></i> Слушаю...';
                 setTimeout(() => {
                     document.getElementById('micBtn').classList.remove('listening');
-                    document.getElementById('micBtn').innerHTML = '🎤 Голос';
+                    document.getElementById('micBtn').innerHTML = '<i class="fas fa-microphone"></i> Голос';
                 }, 5000);
             } else {
-                alert('🎤 Голосовое управление доступно в Chrome');
+                alert('Голосовое управление доступно в Chrome');
             }
         };
 
@@ -1332,10 +1453,20 @@
             if (e.target.value) showSpecificDay(e.target.value);
         };
         document.getElementById('ambientBtn').onclick = toggleAmbient;
-        document.getElementById('qrToggleBtn').onclick = toggleQrCode;
-        document.getElementById('closeQrBtn').onclick = hideQrCode;
-        document.getElementById('qrOverlay').onclick = hideQrCode;
-        document.getElementById('shareBtn').onclick = shareSchedule;
+        
+        // Share modal
+        document.getElementById('shareBtn').onclick = showModal;
+        document.getElementById('closeModalBtn').onclick = hideModal;
+        document.getElementById('modalOverlay').onclick = hideModal;
+        document.getElementById('copyLinkBtn').onclick = copyLink;
+        document.getElementById('nativeShareBtn').onclick = nativeShare;
+
+        // Закрытие по ESC
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && isModalOpen) {
+                hideModal();
+            }
+        });
 
         setInterval(updateNextPair, 60000);
         updateNextPair();
@@ -1346,7 +1477,7 @@
             const toast = document.getElementById('offlineToast');
             toast.style.display = 'block';
             toast.style.background = '#34c759';
-            toast.innerHTML = '🟢 Подключение восстановлено!';
+            toast.innerHTML = '<i class="fas fa-wifi"></i> Подключение восстановлено!';
             setTimeout(() => toast.style.display = 'none', 2500);
         });
 
@@ -1354,7 +1485,7 @@
             const toast = document.getElementById('offlineToast');
             toast.style.background = '#ff3b30';
             toast.style.display = 'block';
-            toast.innerHTML = '📡 Нет подключения к интернету. Работаем офлайн 💾';
+            toast.innerHTML = '<i class="fas fa-wifi-slash"></i> Нет подключения к интернету. Работаем офлайн';
             setTimeout(() => toast.style.display = 'none', 4000);
         });
 
@@ -1372,7 +1503,7 @@
                             newWorker.addEventListener('statechange', () => {
                                 if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
                                     console.log('🆕 Доступна новая версия!');
-                                    if (confirm('📚 Доступна новая версия расписания. Обновить?')) {
+                                    if (confirm('Доступна новая версия расписания. Обновить?')) {
                                         window.location.reload();
                                     }
                                 }
